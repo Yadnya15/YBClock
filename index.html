@@ -116,15 +116,15 @@ nav {
     margin: 0 0 22px;
 }
 
-/* CLOCK: BIBLE VERSE BELOW THE CLOCK */
+/* CLOCK: BIBLE quote BELOW THE CLOCK */
 
-.clock-verse-layout {
+.clock-quote-layout {
     display: flex;
     flex-direction: column;
     gap: 18px;
 }
 
-.clock-verse-card {
+.clock-quote-card {
     width: 100%;
     background: linear-gradient(145deg, #172947, #101a32);
     border: 1px solid #35496e;
@@ -133,7 +133,7 @@ nav {
     min-width: 0;
 }
 
-.clock-verse-card h3 {
+.clock-quote-card h3 {
     color: var(--purple);
     margin: 0 0 20px;
     font-size: 18px;
@@ -155,7 +155,7 @@ nav {
     font-size: 14px;
 }
 
-#clockVerseReference {
+#clockquoteReference {
     color: var(--blue);
     font-weight: bold;
     line-height: 1.5;
@@ -163,7 +163,7 @@ nav {
     font-size: 18px;
 }
 
-#clockVerseText {
+#clockquoteText {
     color: var(--text);
     font-size: 17px;
     line-height: 1.9;
@@ -171,7 +171,7 @@ nav {
     overflow-wrap: anywhere;
 }
 
-.verse-placeholder {
+.quote-placeholder {
     color: var(--muted) !important;
     font-size: 14px !important;
 }
@@ -330,18 +330,18 @@ textarea {
     min-height: 22px;
 }
 
-/* SAVED BIBLE VERSES */
+/* SAVED BIBLE quoteS */
 
-.verse-form {
+.quote-form {
     display: grid;
     gap: 10px;
 }
 
-.verse-form label {
+.quote-form label {
     margin-bottom: 0;
 }
 
-.verse-card {
+.quote-card {
     border: 1px solid #3b4d72;
     background: linear-gradient(135deg, #172947, #211f46);
     border-radius: 15px;
@@ -349,28 +349,28 @@ textarea {
     margin-top: 14px;
 }
 
-.verse-reference {
+.quote-reference {
     color: var(--purple);
     font-weight: bold;
     line-height: 1.5;
     margin-bottom: 10px;
 }
 
-.verse-text {
+.quote-text {
     font-size: 16px;
     line-height: 1.8;
     white-space: pre-wrap;
     overflow-wrap: anywhere;
 }
 
-.verse-actions {
+.quote-actions {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
     margin-top: 14px;
 }
 
-.verse-actions .btn {
+.quote-actions .btn {
     padding: 9px 12px;
     min-height: 38px;
     font-size: 13px;
@@ -433,7 +433,7 @@ textarea {
         border-radius: 17px;
     }
 
-    .clock-verse-card {
+    .clock-quote-card {
         padding: 18px;
     }
 
@@ -474,19 +474,19 @@ textarea {
     <button class="nav-btn active" data-screen="clockScreen">🕒 Clock</button>
     <button class="nav-btn" data-screen="stopwatchScreen">⏱ Stopwatch</button>
     <button class="nav-btn" data-screen="timerScreen">⏳ Timer</button>
-    <button class="nav-btn" data-screen="versesScreen">📖 My Verses</button>
+    <button class="nav-btn" data-screen="quotesScreen">📖 My quotes</button>
 </nav>
 
 <main class="panel">
 
-    <!-- CLOCK WITH BIBLE VERSE UNDERNEATH -->
+    <!-- CLOCK WITH BIBLE quote UNDERNEATH -->
     <section id="clockScreen" class="screen active">
         <h2 class="section-title">Digital Clock</h2>
         <p class="subtitle">Your time and favourite quote.</p>
 
-        <div class="clock-verse-layout">
+        <div class="clock-quote-layout">
 
-            <div class="clock-verse-card">
+            <div class="clock-quote-card">
                 <div class="clock-time" id="clockTime">--:--:--</div>
                 <div class="clock-date" id="clockDate">Loading date...</div>
 
@@ -497,10 +497,10 @@ textarea {
                 </select>
             </div>
 
-            <div class="clock-verse-card">
+            <div class="clock-quote-card">
             
-                <div id="clockVerseReference">Your favourite verse</div>
-                <div id="clockVerseText" class="verse-placeholder">
+                <div id="clockquoteReference">Your favourite quote</div>
+                <div id="clockquoteText" class="quote-placeholder">
                     Add a quote in My Quote to display it here.
                 </div>
             </div>
@@ -577,44 +577,44 @@ textarea {
         </div>
     </section>
 
-    <!-- ADD AND MANAGE BIBLE VERSES -->
-    <section id="versesScreen" class="screen">
+    <!-- ADD AND MANAGE BIBLE quoteS -->
+    <section id="quotesScreen" class="screen">
         <h2 class="section-title">My Quotes 📖</h2>
         <p class="subtitle">
             Save your favourite Quote and choose which one
             appears below the clock.
         </p>
 
-        <form id="verseForm" class="verse-form">
-            <label for="verseReference">Quote reference</label>
-            <input id="verseReference" type="text"
+        <form id="quoteForm" class="quote-form">
+            <label for="quoteReference">Quote reference</label>
+            <input id="quoteReference" type="text"
                 placeholder="e.g. ABC"
                 maxlength="120" required>
 
-            <label for="verseTextInput">Verse text</label>
-            <textarea id="verseTextInput" rows="4"
+            <label for="quoteTextInput">quote text</label>
+            <textarea id="quoteTextInput" rows="4"
                 placeholder="Type or paste your favourite Quote here..."
                 maxlength="3000" required></textarea>
 
             <button class="btn primary" type="submit">
-                ＋ Save My Verse
+                ＋ Save My quote
             </button>
         </form>
 
         <div class="lap-heading">
-            <h3>My Saved Verses</h3>
-            <span id="verseCount" class="status">0 saved</span>
+            <h3>My Saved quotes</h3>
+            <span id="quoteCount" class="status">0 saved</span>
         </div>
 
-        <div id="verseList">
-            <div class="empty">Your saved verses will appear here.</div>
+        <div id="quoteList">
+            <div class="empty">Your saved quotes will appear here.</div>
         </div>
     </section>
 
 </main>
 
 <p class="note">
-    YB Time & Faith · Saved verses are stored in this browser on this device.
+    YB Time & Faith · Saved quotes are stored in this browser on this device.
 </p>
 
 </div>
@@ -643,7 +643,7 @@ function showScreen(id) {
         button.classList.toggle("active", button.dataset.screen === id);
     });
 
-    updateClockVerse();
+    updateClockquote();
 }
 
 navButtons.forEach(button => {
@@ -683,151 +683,151 @@ updateClock();
 setInterval(updateClock, 250);
 
 
-/* BIBLE VERSES */
+/* BIBLE quoteS */
 
-const VERSE_KEY = "ybTimeFaithVerses";
-const SELECTED_VERSE_KEY = "ybSelectedClockVerse";
+const quote_KEY = "ybTimeFaithquotes";
+const SELECTED_quote_KEY = "ybSelectedClockquote";
 
-const verseForm = document.getElementById("verseForm");
-const verseReference = document.getElementById("verseReference");
-const verseTextInput = document.getElementById("verseTextInput");
-const verseList = document.getElementById("verseList");
-const verseCount = document.getElementById("verseCount");
+const quoteForm = document.getElementById("quoteForm");
+const quoteReference = document.getElementById("quoteReference");
+const quoteTextInput = document.getElementById("quoteTextInput");
+const quoteList = document.getElementById("quoteList");
+const quoteCount = document.getElementById("quoteCount");
 
-let savedVerses = loadVerses();
+let savedquotes = loadquotes();
 
-function loadVerses() {
+function loadquotes() {
     try {
-        const data = JSON.parse(localStorage.getItem(VERSE_KEY));
+        const data = JSON.parse(localStorage.getItem(quote_KEY));
         return Array.isArray(data) ? data : [];
     } catch {
         return [];
     }
 }
 
-function saveVerses() {
+function savequotes() {
     try {
-        localStorage.setItem(VERSE_KEY, JSON.stringify(savedVerses));
+        localStorage.setItem(quote_KEY, JSON.stringify(savedquotes));
         return true;
     } catch {
-        alert("Could not save verses. Check your browser storage settings.");
+        alert("Could not save quotes. Check your browser storage settings.");
         return false;
     }
 }
 
-function updateClockVerse() {
+function updateClockquote() {
     const referenceElement =
-        document.getElementById("clockVerseReference");
+        document.getElementById("clockquoteReference");
 
     const textElement =
-        document.getElementById("clockVerseText");
+        document.getElementById("clockquoteText");
 
-    const selectedId = localStorage.getItem(SELECTED_VERSE_KEY);
+    const selectedId = localStorage.getItem(SELECTED_quote_KEY);
 
-    const verse = savedVerses.find(item => item.id === selectedId)
-        || savedVerses[0];
+    const quote = savedquotes.find(item => item.id === selectedId)
+        || savedquotes[0];
 
-    if (verse) {
-        referenceElement.textContent = verse.reference;
-        textElement.textContent = verse.text;
-        textElement.classList.remove("verse-placeholder");
+    if (quote) {
+        referenceElement.textContent = quote.reference;
+        textElement.textContent = quote.text;
+        textElement.classList.remove("quote-placeholder");
     } else {
-        referenceElement.textContent = "Your favourite verse";
+        referenceElement.textContent = "Your favourite quote";
         textElement.textContent =
             "Add a Quote in My Quotes to display it here.";
-        textElement.classList.add("verse-placeholder");
+        textElement.classList.add("quote-placeholder");
     }
 }
 
-function chooseClockVerse(id) {
-    const exists = savedVerses.some(verse => verse.id === id);
+function chooseClockquote(id) {
+    const exists = savedquotes.some(quote => quote.id === id);
     if (!exists) return;
 
-    localStorage.setItem(SELECTED_VERSE_KEY, id);
-    updateClockVerse();
+    localStorage.setItem(SELECTED_quote_KEY, id);
+    updateClockquote();
     showScreen("clockScreen");
 }
 
-verseForm.addEventListener("submit", event => {
+quoteForm.addEventListener("submit", event => {
     event.preventDefault();
 
-    const reference = verseReference.value.trim();
-    const text = verseTextInput.value.trim();
+    const reference = quoteReference.value.trim();
+    const text = quoteTextInput.value.trim();
 
     if (!reference || !text) {
-        alert("Please enter both the verse reference and verse text.");
+        alert("Please enter both the quote reference and quote text.");
         return;
     }
 
-    const verse = {
+    const quote = {
         id: Date.now().toString() + Math.random().toString(16).slice(2),
         reference,
         text
     };
 
-    savedVerses.unshift(verse);
+    savedquotes.unshift(quote);
 
-    if (saveVerses()) {
-        localStorage.setItem(SELECTED_VERSE_KEY, verse.id);
-        verseForm.reset();
-        renderVerses();
-        updateClockVerse();
+    if (savequotes()) {
+        localStorage.setItem(SELECTED_quote_KEY, quote.id);
+        quoteForm.reset();
+        renderquotes();
+        updateClockquote();
     } else {
-        savedVerses.shift();
+        savedquotes.shift();
     }
 });
 
-function renderVerses() {
-    verseList.innerHTML = "";
-    verseCount.textContent = savedVerses.length + " saved";
+function renderquotes() {
+    quoteList.innerHTML = "";
+    quoteCount.textContent = savedquotes.length + " saved";
 
-    if (savedVerses.length === 0) {
-        verseList.innerHTML =
-            '<div class="empty">No verses saved yet.<br>' +
-            'Add your favourite verse above.</div>';
+    if (savedquotes.length === 0) {
+        quoteList.innerHTML =
+            '<div class="empty">No quotes saved yet.<br>' +
+            'Add your favourite quote above.</div>';
 
-        updateClockVerse();
+        updateClockquote();
         return;
     }
 
-    savedVerses.forEach(verse => {
+    savedquotes.forEach(quote => {
         const card = document.createElement("article");
-        card.className = "verse-card";
+        card.className = "quote-card";
 
         const reference = document.createElement("div");
-        reference.className = "verse-reference";
-        reference.textContent = verse.reference;
+        reference.className = "quote-reference";
+        reference.textContent = quote.reference;
 
         const text = document.createElement("div");
-        text.className = "verse-text";
-        text.textContent = verse.text;
+        text.className = "quote-text";
+        text.textContent = quote.text;
 
         const actions = document.createElement("div");
-        actions.className = "verse-actions";
+        actions.className = "quote-actions";
 
         const chooseButton = document.createElement("button");
         chooseButton.className = "btn primary";
         chooseButton.textContent = "Show Below Clock";
         chooseButton.addEventListener("click", () => {
-            chooseClockVerse(verse.id);
+            chooseClockquote(quote.id);
         });
 
         const copyButton = document.createElement("button");
         copyButton.className = "btn";
-        copyButton.textContent = "Copy Verse";
+        copyButton.textContent = "Copy quote";
 
         copyButton.addEventListener("click", async () => {
-            const content = verse.text + "\n— " + verse.reference;
+            const content = quote.text + "\n— " + quote.reference;
 
             try {
                 await navigator.clipboard.writeText(content);
                 copyButton.textContent = "Copied!";
             } catch {
-                window.prompt("Copy your verse:", content);
+                window.prompt("Copy your quote:", content);
             }
 
             setTimeout(() => {
-                copyButton.textContent = "Copy Verse";
+                copyButton.textContent = "Copy quote";
             }, 1500);
         });
 
@@ -836,35 +836,35 @@ function renderVerses() {
         deleteButton.textContent = "Delete";
 
         deleteButton.addEventListener("click", () => {
-            if (!confirm("Delete this saved verse?")) return;
+            if (!confirm("Delete this saved quote?")) return;
 
-            const previousVerses = [...savedVerses];
+            const previousquotes = [...savedquotes];
 
-            savedVerses = savedVerses.filter(
-                item => item.id !== verse.id
+            savedquotes = savedquotes.filter(
+                item => item.id !== quote.id
             );
 
-            if (saveVerses()) {
-                if (localStorage.getItem(SELECTED_VERSE_KEY) === verse.id) {
-                    localStorage.removeItem(SELECTED_VERSE_KEY);
+            if (savequotes()) {
+                if (localStorage.getItem(SELECTED_quote_KEY) === quote.id) {
+                    localStorage.removeItem(SELECTED_quote_KEY);
                 }
 
-                renderVerses();
-                updateClockVerse();
+                renderquotes();
+                updateClockquote();
             } else {
-                savedVerses = previousVerses;
+                savedquotes = previousquotes;
             }
         });
 
         actions.append(chooseButton, copyButton, deleteButton);
         card.append(reference, text, actions);
-        verseList.appendChild(card);
+        quoteList.appendChild(card);
     });
 
-    updateClockVerse();
+    updateClockquote();
 }
 
-renderVerses();
+renderquotes();
 
 
 /* STOPWATCH */
