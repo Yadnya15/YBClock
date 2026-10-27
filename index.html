@@ -467,7 +467,7 @@ textarea {
 <header>
     <div class="logo">⌚ ✨ 📖</div>
     <h1>YB CLOCK</h1>
-    <p>Your time, your focus, your favourite Bible verses.</p>
+    <p>Your time, your focus, your favourite quotes.</p>
 </header>
 
 <nav aria-label="Main navigation">
@@ -482,7 +482,7 @@ textarea {
     <!-- CLOCK WITH BIBLE VERSE UNDERNEATH -->
     <section id="clockScreen" class="screen active">
         <h2 class="section-title">Digital Clock</h2>
-        <p class="subtitle">Your time and favourite Bible verse.</p>
+        <p class="subtitle">Your time and favourite quote.</p>
 
         <div class="clock-verse-layout">
 
@@ -501,7 +501,7 @@ textarea {
             
                 <div id="clockVerseReference">Your favourite verse</div>
                 <div id="clockVerseText" class="verse-placeholder">
-                    Add a Bible verse in My Verses to display it here.
+                    Add a quote in My Quote to display it here.
                 </div>
             </div>
 
@@ -579,21 +579,21 @@ textarea {
 
     <!-- ADD AND MANAGE BIBLE VERSES -->
     <section id="versesScreen" class="screen">
-        <h2 class="section-title">My Bible Verses 📖</h2>
+        <h2 class="section-title">My Quotes 📖</h2>
         <p class="subtitle">
-            Save your favourite Bible verses and choose which one
+            Save your favourite Quote and choose which one
             appears below the clock.
         </p>
 
         <form id="verseForm" class="verse-form">
-            <label for="verseReference">Bible verse reference</label>
+            <label for="verseReference">Quote reference</label>
             <input id="verseReference" type="text"
-                placeholder="e.g. Psalm 23:1"
+                placeholder="e.g. ABC"
                 maxlength="120" required>
 
             <label for="verseTextInput">Verse text</label>
             <textarea id="verseTextInput" rows="4"
-                placeholder="Type or paste your favourite Bible verse here..."
+                placeholder="Type or paste your favourite Quote here..."
                 maxlength="3000" required></textarea>
 
             <button class="btn primary" type="submit">
@@ -734,7 +734,7 @@ function updateClockVerse() {
     } else {
         referenceElement.textContent = "Your favourite verse";
         textElement.textContent =
-            "Add a Bible verse in My Verses to display it here.";
+            "Add a Quote in My Quotes to display it here.";
         textElement.classList.add("verse-placeholder");
     }
 }
