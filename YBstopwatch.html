@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YB CLOCK</title>
+
+<style>
+:root {
+    --bg: #07101f;
+    --panel: #13213b;
+    --panel2: #1b2c4b;
+    --blue: #62b8ff;
+    --purple: #b5a2ff;
+    --text: #f4f6ff;
+    --muted: #b5c2dd;
+    --green: #56dfad;
+    --red: #ff8196;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px 14px;
+    font-family: Arial, sans-serif;
+    color: var(--text);
+    background: radial-gradient(circle at top, #1b3260, var(--bg) 65%);
+}
+
+button, input, textarea, select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.app {
+    max-width: 900px;
+    margin: auto;
+}
+
+header {
+    text-align: center;
+    padding: 16px 0 22px;
+}
+
+.logo {
+    font-size: 34px;
+    margin-bottom: 8px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: clamp(25px, 5vw, 36px);
+    color: var(--purple);
+}
+
+header p {
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: 9px;
+}
+
+nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.nav-btn {
+    border: 1px solid #35496e;
+    background: #101c32;
+    color: var(--muted);
+    border-radius: 12px;
+    padding: 13px 5px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.nav-btn.active {
+    background: linear-gradient(120deg, #8c7bff, #58bfff);
+    color: #081329;
+    border-color: transparent;
+}
+
+.panel {
+    background: linear-gradient(145deg, #13213b, #0e192e);
+    border: 1px solid #35496e;
+    border-radius: 22px;
+    padding: clamp(18px, 4vw, 30px);
+    box-shadow: 0 18px 45px #0004;
+}
+
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+.section-title {
+    margin: 0 0 8px;
+    font-size: 23px;
+}
+
+.subtitle {
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0 0 22px;
+}
+
+/* CLOCK: BIBLE VERSE BELOW THE CLOCK */
+
+.clock-verse-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.clock-verse-card {
+    width: 100%;
+    background: linear-gradient(145deg, #172947, #101a32);
+    border: 1px solid #35496e;
+    border-radius: 17px;
+    padding: 22px;
+    min-width: 0;
+}
+
+.clock-verse-card h3 {
+    color: var(--purple);
+    margin: 0 0 20px;
+    font-size: 18px;
+}
+
+.clock-time {
+    font-size: clamp(38px, 8vw, 65px);
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-variant-numeric: tabular-nums;
+    color: var(--blue);
+    overflow-wrap: anywhere;
+}
+
+.clock-date {
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: 13px;
+    font-size: 14px;
+}
+
+#clockVerseReference {
+    color: var(--blue);
+    font-weight: bold;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+
+#clockVerseText {
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.9;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.verse-placeholder {
+    color: var(--muted) !important;
+    font-size: 14px !important;
+}
+
+label {
+    display: block;
+    color: var(--muted);
+    margin: 16px 0 8px;
+    font-size: 14px;
+}
+
+input, textarea, select {
+    width: 100%;
+    background: #09152a;
+    color: var(--text);
+    border: 1px solid #425579;
+    border-radius: 11px;
+    padding: 13px;
+    outline: none;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: var(--blue);
+}
+
+textarea {
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.btn {
+    border: 1px solid #43577c;
+    border-radius: 12px;
+    padding: 12px 16px;
+    background: var(--panel2);
+    color: white;
+    font-weight: bold;
+    min-height: 44px;
+}
+
+.btn.primary {
+    border: 0;
+    color: #071329;
+    background: linear-gradient(120deg, #9a8aff, #62c2ff);
+}
+
+.btn.green {
+    background: #164c40;
+    border-color: #287d65;
+    color: #a5ffdc;
+}
+
+.btn.red {
+    background: #4b2436;
+    border-color: #82405a;
+    color: #ffb0bd;
+}
+
+.btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* STOPWATCH */
+
+.stopwatch-face {
+    text-align: center;
+    padding: 30px 0 25px;
+}
+
+.stopwatch-display {
+    font-size: clamp(42px, 10vw, 76px);
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+    color: var(--blue);
+    letter-spacing: 1px;
+    overflow-wrap: anywhere;
+}
+
+.status {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-top: 14px;
+}
+
+.lap-heading {
+    margin-top: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.lap-heading h3 {
+    margin: 0;
+}
+
+.lap-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+}
+
+.lap-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 4px;
+    border-bottom: 1px solid #2c3b59;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.lap-list strong {
+    color: var(--text);
+}
+
+.empty {
+    color: var(--muted);
+    text-align: center;
+    padding: 22px 5px;
+    line-height: 1.7;
+}
+
+/* COUNTDOWN TIMER */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.timer-display {
+    text-align: center;
+    font-size: clamp(44px, 11vw, 72px);
+    font-weight: bold;
+    color: var(--purple);
+    font-variant-numeric: tabular-nums;
+    margin: 28px 0;
+    overflow-wrap: anywhere;
+}
+
+.timer-status {
+    text-align: center;
+    color: var(--muted);
+    min-height: 22px;
+}
+
+/* SAVED BIBLE VERSES */
+
+.verse-form {
+    display: grid;
+    gap: 10px;
+}
+
+.verse-form label {
+    margin-bottom: 0;
+}
+
+.verse-card {
+    border: 1px solid #3b4d72;
+    background: linear-gradient(135deg, #172947, #211f46);
+    border-radius: 15px;
+    padding: 17px;
+    margin-top: 14px;
+}
+
+.verse-reference {
+    color: var(--purple);
+    font-weight: bold;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.verse-text {
+    font-size: 16px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.verse-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+}
+
+.verse-actions .btn {
+    padding: 9px 12px;
+    min-height: 38px;
+    font-size: 13px;
+}
+
+.note {
+    text-align: center;
+    color: #899cbd;
+    font-size: 12px;
+    line-height: 1.7;
+    margin: 20px 0 0;
+}
+
+/* FULLSCREEN STOPWATCH */
+
+#stopwatchScreen:fullscreen,
+#stopwatchScreen.fullscreen-fallback {
+    background: #050b18;
+    overflow-y: auto;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#stopwatchScreen:fullscreen .stopwatch-display,
+#stopwatchScreen.fullscreen-fallback .stopwatch-display {
+    font-size: clamp(55px, 15vw, 130px);
+}
+
+#stopwatchScreen:fullscreen .section-title,
+#stopwatchScreen.fullscreen-fallback .section-title {
+    text-align: center;
+}
+
+.fullscreen-exit {
+    display: none;
+}
+
+#stopwatchScreen:fullscreen .fullscreen-exit,
+#stopwatchScreen.fullscreen-fallback .fullscreen-exit {
+    display: inline-block;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    nav {
+        gap: 5px;
+    }
+
+    .nav-btn {
+        font-size: 11px;
+        padding: 12px 2px;
+    }
+
+    .panel {
+        border-radius: 17px;
+    }
+
+    .clock-verse-card {
+        padding: 18px;
+    }
+
+    .form-grid {
+        gap: 7px;
+    }
+
+    .form-grid input {
+        padding: 11px 7px;
+    }
+
+    .btn {
+        padding: 12px;
+    }
+
+    #stopwatchScreen.fullscreen-fallback {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        border-radius: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header>
+    <div class="logo">⌚ ✨ 📖</div>
+    <h1>YB CLOCK</h1>
+    <p>Your time, your focus, your favourite Bible verses.</p>
+</header>
+
+<nav aria-label="Main navigation">
+    <button class="nav-btn active" data-screen="clockScreen">🕒 Clock</button>
+    <button class="nav-btn" data-screen="stopwatchScreen">⏱ Stopwatch</button>
+    <button class="nav-btn" data-screen="timerScreen">⏳ Timer</button>
+    <button class="nav-btn" data-screen="versesScreen">📖 My Verses</button>
+</nav>
+
+<main class="panel">
+
+    <!-- CLOCK WITH BIBLE VERSE UNDERNEATH -->
+    <section id="clockScreen" class="screen active">
+        <h2 class="section-title">Digital Clock</h2>
+        <p class="subtitle">Your time and favourite Bible verse.</p>
+
+        <div class="clock-verse-layout">
+
+            <div class="clock-verse-card">
+                <div class="clock-time" id="clockTime">--:--:--</div>
+                <div class="clock-date" id="clockDate">Loading date...</div>
+
+                <label for="clockFormat">Time format</label>
+                <select id="clockFormat">
+                    <option value="12">12-hour format</option>
+                    <option value="24">24-hour format</option>
+                </select>
+            </div>
+
+            <div class="clock-verse-card">
+                <h3>📖 Bible Verse</h3>
+                <div id="clockVerseReference">Your favourite verse</div>
+                <div id="clockVerseText" class="verse-placeholder">
+                    Add a Bible verse in My Verses to display it here.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- STOPWATCH -->
+    <section id="stopwatchScreen" class="screen">
+        <h2 class="section-title">Stopwatch</h2>
+        <p class="subtitle">
+            Track elapsed time, record laps, or use fullscreen.
+        </p>
+
+        <div class="stopwatch-face">
+            <div class="stopwatch-display" id="stopwatchDisplay">
+                00:00:00.00
+            </div>
+            <div class="status" id="stopwatchStatus">Ready to start</div>
+        </div>
+
+        <div class="controls">
+            <button class="btn primary" id="startPauseBtn">▶ Start</button>
+            <button class="btn" id="lapBtn" disabled>＋ Lap</button>
+            <button class="btn red" id="resetStopwatchBtn">↺ Reset</button>
+            <button class="btn green" id="fullscreenBtn">⛶ Fullscreen</button>
+            <button class="btn fullscreen-exit" id="exitFullscreenBtn">
+                ✕ Exit Fullscreen
+            </button>
+        </div>
+
+        <div class="lap-heading">
+            <h3>Lap History</h3>
+            <button class="btn" id="clearLapsBtn">Clear Laps</button>
+        </div>
+
+        <ul class="lap-list" id="lapList">
+            <li class="empty">Your lap records will appear here.</li>
+        </ul>
+    </section>
+
+    <!-- COUNTDOWN TIMER -->
+    <section id="timerScreen" class="screen">
+        <h2 class="section-title">Countdown Timer</h2>
+        <p class="subtitle">Set a duration and start your countdown.</p>
+
+        <div class="form-grid">
+            <div>
+                <label for="hoursInput">Hours</label>
+                <input id="hoursInput" type="number"
+                    min="0" max="99" value="0">
+            </div>
+
+            <div>
+                <label for="minutesInput">Minutes</label>
+                <input id="minutesInput" type="number"
+                    min="0" max="59" value="5">
+            </div>
+
+            <div>
+                <label for="secondsInput">Seconds</label>
+                <input id="secondsInput" type="number"
+                    min="0" max="59" value="0">
+            </div>
+        </div>
+
+        <div class="timer-display" id="timerDisplay">00:05:00</div>
+        <div class="timer-status" id="timerStatus">Ready to begin</div>
+
+        <div class="controls">
+            <button class="btn primary" id="timerStartBtn">▶ Start</button>
+            <button class="btn" id="timerPauseBtn" disabled>⏸ Pause</button>
+            <button class="btn red" id="timerResetBtn">↺ Reset</button>
+        </div>
+    </section>
+
+    <!-- ADD AND MANAGE BIBLE VERSES -->
+    <section id="versesScreen" class="screen">
+        <h2 class="section-title">My Bible Verses 📖</h2>
+        <p class="subtitle">
+            Save your favourite Bible verses and choose which one
+            appears below the clock.
+        </p>
+
+        <form id="verseForm" class="verse-form">
+            <label for="verseReference">Bible verse reference</label>
+            <input id="verseReference" type="text"
+                placeholder="e.g. Psalm 23:1"
+                maxlength="120" required>
+
+            <label for="verseTextInput">Verse text</label>
+            <textarea id="verseTextInput" rows="4"
+                placeholder="Type or paste your favourite Bible verse here..."
+                maxlength="3000" required></textarea>
+
+            <button class="btn primary" type="submit">
+                ＋ Save My Verse
+            </button>
+        </form>
+
+        <div class="lap-heading">
+            <h3>My Saved Verses</h3>
+            <span id="verseCount" class="status">0 saved</span>
+        </div>
+
+        <div id="verseList">
+            <div class="empty">Your saved verses will appear here.</div>
+        </div>
+    </section>
+
+</main>
+
+<p class="note">
+    YB Time & Faith · Saved verses are stored in this browser on this device.
+</p>
+
+</div>
+
+<script>
+/* NAVIGATION */
+
+const navButtons = document.querySelectorAll(".nav-btn");
+const screens = document.querySelectorAll(".screen");
+
+function showScreen(id) {
+    const stopwatchScreen = document.getElementById("stopwatchScreen");
+
+    if (
+        stopwatchScreen.classList.contains("fullscreen-fallback") &&
+        id !== "stopwatchScreen"
+    ) {
+        exitStopwatchFullscreen();
+    }
+
+    screens.forEach(screen => {
+        screen.classList.toggle("active", screen.id === id);
+    });
+
+    navButtons.forEach(button => {
+        button.classList.toggle("active", button.dataset.screen === id);
+    });
+
+    updateClockVerse();
+}
+
+navButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        showScreen(button.dataset.screen);
+    });
+});
+
+
+/* DIGITAL CLOCK */
+
+const clockTime = document.getElementById("clockTime");
+const clockDate = document.getElementById("clockDate");
+const clockFormat = document.getElementById("clockFormat");
+
+function updateClock() {
+    const now = new Date();
+    const is24Hour = clockFormat.value === "24";
+
+    clockTime.textContent = now.toLocaleTimeString(undefined, {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: !is24Hour
+    });
+
+    clockDate.textContent = now.toLocaleDateString(undefined, {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
+}
+
+clockFormat.addEventListener("change", updateClock);
+updateClock();
+setInterval(updateClock, 250);
+
+
+/* BIBLE VERSES */
+
+const VERSE_KEY = "ybTimeFaithVerses";
+const SELECTED_VERSE_KEY = "ybSelectedClockVerse";
+
+const verseForm = document.getElementById("verseForm");
+const verseReference = document.getElementById("verseReference");
+const verseTextInput = document.getElementById("verseTextInput");
+const verseList = document.getElementById("verseList");
+const verseCount = document.getElementById("verseCount");
+
+let savedVerses = loadVerses();
+
+function loadVerses() {
+    try {
+        const data = JSON.parse(localStorage.getItem(VERSE_KEY));
+        return Array.isArray(data) ? data : [];
+    } catch {
+        return [];
+    }
+}
+
+function saveVerses() {
+    try {
+        localStorage.setItem(VERSE_KEY, JSON.stringify(savedVerses));
+        return true;
+    } catch {
+        alert("Could not save verses. Check your browser storage settings.");
+        return false;
+    }
+}
+
+function updateClockVerse() {
+    const referenceElement =
+        document.getElementById("clockVerseReference");
+
+    const textElement =
+        document.getElementById("clockVerseText");
+
+    const selectedId = localStorage.getItem(SELECTED_VERSE_KEY);
+
+    const verse = savedVerses.find(item => item.id === selectedId)
+        || savedVerses[0];
+
+    if (verse) {
+        referenceElement.textContent = verse.reference;
+        textElement.textContent = verse.text;
+        textElement.classList.remove("verse-placeholder");
+    } else {
+        referenceElement.textContent = "Your favourite verse";
+        textElement.textContent =
+            "Add a Bible verse in My Verses to display it here.";
+        textElement.classList.add("verse-placeholder");
+    }
+}
+
+function chooseClockVerse(id) {
+    const exists = savedVerses.some(verse => verse.id === id);
+    if (!exists) return;
+
+    localStorage.setItem(SELECTED_VERSE_KEY, id);
+    updateClockVerse();
+    showScreen("clockScreen");
+}
+
+verseForm.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const reference = verseReference.value.trim();
+    const text = verseTextInput.value.trim();
+
+    if (!reference || !text) {
+        alert("Please enter both the verse reference and verse text.");
+        return;
+    }
+
+    const verse = {
+        id: Date.now().toString() + Math.random().toString(16).slice(2),
+        reference,
+        text
+    };
+
+    savedVerses.unshift(verse);
+
+    if (saveVerses()) {
+        localStorage.setItem(SELECTED_VERSE_KEY, verse.id);
+        verseForm.reset();
+        renderVerses();
+        updateClockVerse();
+    } else {
+        savedVerses.shift();
+    }
+});
+
+function renderVerses() {
+    verseList.innerHTML = "";
+    verseCount.textContent = savedVerses.length + " saved";
+
+    if (savedVerses.length === 0) {
+        verseList.innerHTML =
+            '<div class="empty">No verses saved yet.<br>' +
+            'Add your favourite verse above.</div>';
+
+        updateClockVerse();
+        return;
+    }
+
+    savedVerses.forEach(verse => {
+        const card = document.createElement("article");
+        card.className = "verse-card";
+
+        const reference = document.createElement("div");
+        reference.className = "verse-reference";
+        reference.textContent = verse.reference;
+
+        const text = document.createElement("div");
+        text.className = "verse-text";
+        text.textContent = verse.text;
+
+        const actions = document.createElement("div");
+        actions.className = "verse-actions";
+
+        const chooseButton = document.createElement("button");
+        chooseButton.className = "btn primary";
+        chooseButton.textContent = "Show Below Clock";
+        chooseButton.addEventListener("click", () => {
+            chooseClockVerse(verse.id);
+        });
+
+        const copyButton = document.createElement("button");
+        copyButton.className = "btn";
+        copyButton.textContent = "Copy Verse";
+
+        copyButton.addEventListener("click", async () => {
+            const content = verse.text + "\n— " + verse.reference;
+
+            try {
+                await navigator.clipboard.writeText(content);
+                copyButton.textContent = "Copied!";
+            } catch {
+                window.prompt("Copy your verse:", content);
+            }
+
+            setTimeout(() => {
+                copyButton.textContent = "Copy Verse";
+            }, 1500);
+        });
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "btn red";
+        deleteButton.textContent = "Delete";
+
+        deleteButton.addEventListener("click", () => {
+            if (!confirm("Delete this saved verse?")) return;
+
+            const previousVerses = [...savedVerses];
+
+            savedVerses = savedVerses.filter(
+                item => item.id !== verse.id
+            );
+
+            if (saveVerses()) {
+                if (localStorage.getItem(SELECTED_VERSE_KEY) === verse.id) {
+                    localStorage.removeItem(SELECTED_VERSE_KEY);
+                }
+
+                renderVerses();
+                updateClockVerse();
+            } else {
+                savedVerses = previousVerses;
+            }
+        });
+
+        actions.append(chooseButton, copyButton, deleteButton);
+        card.append(reference, text, actions);
+        verseList.appendChild(card);
+    });
+
+    updateClockVerse();
+}
+
+renderVerses();
+
+
+/* STOPWATCH */
+
+const stopwatchScreen = document.getElementById("stopwatchScreen");
+const stopwatchDisplay = document.getElementById("stopwatchDisplay");
+const stopwatchStatus = document.getElementById("stopwatchStatus");
+const startPauseBtn = document.getElementById("startPauseBtn");
+const lapBtn = document.getElementById("lapBtn");
+const lapList = document.getElementById("lapList");
+
+let stopwatchRunning = false;
+let stopwatchStartTime = 0;
+let stopwatchElapsed = 0;
+let stopwatchFrame = null;
+let lastLapTime = 0;
+let lapCount = 0;
+let laps = [];
+
+function formatStopwatch(ms) {
+    const centisecondsTotal = Math.floor(ms / 10);
+    const centiseconds = centisecondsTotal % 100;
+    const totalSeconds = Math.floor(centisecondsTotal / 100);
+    const seconds = totalSeconds % 60;
+    const minutes = Math.floor(totalSeconds / 60) % 60;
+    const hours = Math.floor(totalSeconds / 3600);
+
+    return String(hours).padStart(2, "0") + ":" +
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0") + "." +
+        String(centiseconds).padStart(2, "0");
+}
+
+function renderStopwatch() {
+    const elapsed = stopwatchRunning
+        ? stopwatchElapsed + performance.now() - stopwatchStartTime
+        : stopwatchElapsed;
+
+    stopwatchDisplay.textContent = formatStopwatch(elapsed);
+
+    if (stopwatchRunning) {
+        stopwatchFrame = requestAnimationFrame(renderStopwatch);
+    }
+}
+
+function startStopwatch() {
+    if (stopwatchRunning) return;
+
+    stopwatchRunning = true;
+    stopwatchStartTime = performance.now();
+
+    stopwatchStatus.textContent = "Stopwatch is running";
+    startPauseBtn.textContent = "⏸ Pause";
+    lapBtn.disabled = false;
+
+    renderStopwatch();
+}
+
+function pauseStopwatch() {
+    if (!stopwatchRunning) return;
+
+    stopwatchElapsed += performance.now() - stopwatchStartTime;
+    stopwatchRunning = false;
+
+    cancelAnimationFrame(stopwatchFrame);
+
+    stopwatchStatus.textContent = "Paused";
+    startPauseBtn.textContent = "▶ Resume";
+    lapBtn.disabled = true;
+
+    stopwatchDisplay.textContent = formatStopwatch(stopwatchElapsed);
+}
+
+startPauseBtn.addEventListener("click", () => {
+    if (stopwatchRunning) {
+        pauseStopwatch();
+    } else {
+        startStopwatch();
+    }
+});
+
+lapBtn.addEventListener("click", () => {
+    if (!stopwatchRunning) return;
+
+    const elapsed =
+        stopwatchElapsed + performance.now() - stopwatchStartTime;
+
+    const lapDuration = elapsed - lastLapTime;
+    lastLapTime = elapsed;
+    lapCount++;
+
+    laps.unshift({
+        number: lapCount,
+        total: elapsed,
+        duration: lapDuration
+    });
+
+    renderLaps();
+});
+
+function renderLaps() {
+    lapList.innerHTML = "";
+
+    if (laps.length === 0) {
+        lapList.innerHTML =
+            '<li class="empty">Your lap records will appear here.</li>';
+        return;
+    }
+
+    laps.forEach(lap => {
+        const li = document.createElement("li");
+        const label = document.createElement("span");
+        const values = document.createElement("span");
+
+        label.textContent = "Lap " + lap.number;
+
+        const duration = document.createElement("strong");
+        duration.textContent = formatStopwatch(lap.duration);
+
+        const total = document.createElement("div");
+        total.style.fontSize = "12px";
+        total.style.marginTop = "5px";
+        total.textContent = "Total: " + formatStopwatch(lap.total);
+
+        values.append(duration, total);
+        li.append(label, values);
+        lapList.appendChild(li);
+    });
+}
+
+document.getElementById("clearLapsBtn").addEventListener("click", () => {
+    laps = [];
+    lapCount = 0;
+    lastLapTime = 0;
+    renderLaps();
+});
+
+document.getElementById("resetStopwatchBtn").addEventListener("click", () => {
+    stopwatchRunning = false;
+    cancelAnimationFrame(stopwatchFrame);
+
+    stopwatchElapsed = 0;
+    stopwatchStartTime = 0;
+    lastLapTime = 0;
+    lapCount = 0;
+    laps = [];
+
+    stopwatchDisplay.textContent = "00:00:00.00";
+    stopwatchStatus.textContent = "Ready to start";
+    startPauseBtn.textContent = "▶ Start";
+    lapBtn.disabled = true;
+
+    renderLaps();
+});
+
+async function enterStopwatchFullscreen() {
+    if (document.fullscreenElement) return;
+
+    try {
+        if (!stopwatchScreen.requestFullscreen) {
+            throw new Error("Fullscreen is not supported");
+        }
+
+        await stopwatchScreen.requestFullscreen();
+    } catch (error) {
+        stopwatchScreen.classList.add("fullscreen-fallback");
+        document.body.style.overflow = "hidden";
+    }
+}
+
+async function exitStopwatchFullscreen() {
+    if (document.fullscreenElement) {
+        try {
+            await document.exitFullscreen();
+        } catch (error) {
+            // Remove fallback styling below.
+        }
+    }
+
+    stopwatchScreen.classList.remove("fullscreen-fallback");
+    document.body.style.overflow = "";
+}
+
+document.getElementById("fullscreenBtn").addEventListener("click", () => {
+    enterStopwatchFullscreen();
+});
+
+document.getElementById("exitFullscreenBtn").addEventListener("click", () => {
+    exitStopwatchFullscreen();
+});
+
+document.addEventListener("fullscreenchange", () => {
+    const isFullscreen = document.fullscreenElement === stopwatchScreen;
+
+    document.getElementById("fullscreenBtn").textContent =
+        isFullscreen ? "⛶ Fullscreen Active" : "⛶ Fullscreen";
+});
+
+
+/* COUNTDOWN TIMER */
+
+const hoursInput = document.getElementById("hoursInput");
+const minutesInput = document.getElementById("minutesInput");
+const secondsInput = document.getElementById("secondsInput");
+
+const timerDisplay = document.getElementById("timerDisplay");
+const timerStatus = document.getElementById("timerStatus");
+const timerStartBtn = document.getElementById("timerStartBtn");
+const timerPauseBtn = document.getElementById("timerPauseBtn");
+
+let timerRemaining = 300;
+let timerEndTime = 0;
+let timerRunning = false;
+let timerInterval = null;
+
+function readTimerInputs() {
+    const h = Math.min(99, Math.max(0, Number(hoursInput.value) || 0));
+    const m = Math.min(59, Math.max(0, Number(minutesInput.value) || 0));
+    const s = Math.min(59, Math.max(0, Number(secondsInput.value) || 0));
+
+    return Math.floor(h * 3600 + m * 60 + s);
+}
+
+function formatTimer(totalSeconds) {
+    const value = Math.max(0, Math.ceil(totalSeconds));
+
+    const hours = Math.floor(value / 3600);
+    const minutes = Math.floor((value % 3600) / 60);
+    const seconds = value % 60;
+
+    return String(hours).padStart(2, "0") + ":" +
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0");
+}
+
+function updateTimerDisplay() {
+    timerDisplay.textContent = formatTimer(timerRemaining);
+}
+
+function updateTimer() {
+    timerRemaining = Math.max(0, (timerEndTime - Date.now()) / 1000);
+    updateTimerDisplay();
+
+    if (timerRemaining <= 0) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        timerRemaining = 0;
+
+        updateTimerDisplay();
+        timerStatus.textContent = "Time is up! 🎉";
+        timerStartBtn.disabled = false;
+        timerPauseBtn.disabled = true;
+        timerStartBtn.textContent = "▶ Start Again";
+
+        alert("Countdown complete!");
+    }
+}
+
+timerStartBtn.addEventListener("click", () => {
+    if (timerRunning) return;
+
+    if (timerRemaining <= 0) {
+        timerRemaining = readTimerInputs();
+    }
+
+    if (timerRemaining <= 0) {
+        timerStatus.textContent = "Enter a duration greater than zero.";
+        return;
+    }
+
+    timerRunning = true;
+    timerEndTime = Date.now() + timerRemaining * 1000;
+
+    timerStatus.textContent = "Countdown running";
+    timerStartBtn.disabled = true;
+    timerPauseBtn.disabled = false;
+
+    clearInterval(timerInterval);
+    timerInterval = setInterval(updateTimer, 100);
+
+    updateTimer();
+});
+
+timerPauseBtn.addEventListener("click", () => {
+    if (!timerRunning) return;
+
+    timerRemaining = Math.max(0, (timerEndTime - Date.now()) / 1000);
+    timerRunning = false;
+
+    clearInterval(timerInterval);
+    updateTimerDisplay();
+
+    timerStatus.textContent = "Countdown paused";
+    timerStartBtn.disabled = false;
+    timerPauseBtn.disabled = true;
+    timerStartBtn.textContent = "▶ Resume";
+});
+
+document.getElementById("timerResetBtn").addEventListener("click", () => {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    timerRemaining = readTimerInputs();
+
+    updateTimerDisplay();
+
+    timerStatus.textContent = "Ready to begin";
+    timerStartBtn.disabled = false;
+    timerPauseBtn.disabled = true;
+    timerStartBtn.textContent = "▶ Start";
+});
+
+[hoursInput, minutesInput, secondsInput].forEach(input => {
+    input.addEventListener("input", () => {
+        if (timerRunning) return;
+
+        timerRemaining = readTimerInputs();
+        updateTimerDisplay();
+
+        timerStatus.textContent = "Ready to begin";
+        timerStartBtn.textContent = "▶ Start";
+    });
+});
+
+updateTimerDisplay();
+</script>
+
+</body>
+</html>
